@@ -26,7 +26,6 @@ const fetchWallpaper = () => {
 const fetchWallpaperPeriodic = (wallpaperPath) => {
     function functionFetchTem() {
         fetchWallpaper().then((res) => {
-            console.log(res)
             DownloadWallpaper.downloadWallpaper(res, wallpaperPath)
         })
     }
