@@ -1,6 +1,6 @@
 import axios from "axios";
-import DownloadWallpaper from "./DownloadWallpaper";
 import CValue from "../CValue";
+import DownloadWallpaper from "./DownloadWallpaper";
 
 const fetchWallpaper = () => {
     let url = "https://www.reddit.com/r/wallpaper/top.json"
@@ -19,14 +19,12 @@ const fetchWallpaper = () => {
 }
 
 const fetchWallpaperPeriodic = (wallpaperPath) => {
-    let wallpaperTimer = function wallpaperPeriodic(){
-        fetchWallpaper()
-            .then(res => {
-                DownloadWallpaper.downloadWallpaper(res,wallpaperPath)
-            })
-        setTimeout( wallpaperPeriodic, CValue.wallpaperDownloadInterval );
-    };
-    wallpaperTimer();
+    function functionFetchTem() {
+        fetchWallpaper().then((res)=>{
+            DownloadWallpaper.downloadWallpaper(res,wallpaperPath)
+        })
+    }
+    setInterval(functionFetchTem, CValue.wallpaperDownloadInterval());
 }
 
 export default {fetchWallpaper,fetchWallpaperPeriodic}
