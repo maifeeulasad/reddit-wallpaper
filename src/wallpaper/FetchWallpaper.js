@@ -4,15 +4,20 @@ import DownloadWallpaper from "./DownloadWallpaper";
 
 const fetchWallpaper = () => {
     let url = "https://www.reddit.com/r/wallpaper/top.json"
-    let backgroundImage
+
     return new Promise((resolve => {
         axios
             .get(url)
-            .then((res)=>{
+            .then((res) => {
                 let responseJson = JSON.parse(JSON.stringify(res.data)).data.children;
                 let randomIndex = Math.random() * responseJson.length | 0;
                 let randomImage = responseJson[randomIndex].data;
-                backgroundImage = randomImage.url;
+                let backgroundImage;
+                if (randomImage['is_gallery']===undefined) {
+                    backgroundImage = randomImage.url;
+                } else {
+                    backgroundImage = CValue.wallpaperDefaultUrl()
+                }
                 resolve(backgroundImage)
             })
     }))
@@ -20,11 +25,12 @@ const fetchWallpaper = () => {
 
 const fetchWallpaperPeriodic = (wallpaperPath) => {
     function functionFetchTem() {
-        fetchWallpaper().then((res)=>{
-            DownloadWallpaper.downloadWallpaper(res,wallpaperPath)
+        fetchWallpaper().then((res) => {
+            console.log(res)
+            DownloadWallpaper.downloadWallpaper(res, wallpaperPath)
         })
     }
     setInterval(functionFetchTem, CValue.wallpaperDownloadInterval());
 }
 
-export default {fetchWallpaper,fetchWallpaperPeriodic}
+export default {fetchWallpaper, fetchWallpaperPeriodic}
