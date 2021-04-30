@@ -12,6 +12,7 @@
     "start": "node --experimental-modules --es-module-specifier-resolution=node index.js"
   },
   "dependencies": {
-    "axios": "^0.21.1"
+    "axios": "^0.21.1",
+    "shelljs": "^0.8.4"
   }
 }

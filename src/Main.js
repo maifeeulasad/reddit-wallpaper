@@ -2,23 +2,20 @@ import CurrentOs from "./CheckOs";
 import * as os from "os";
 import * as fs from "fs";
 import FetchWallpaper from "./wallpaper/FetchWallpaper"
-import DownloadWallpaper from "./wallpaper/DownloadWallpaper"
+import shelljs from "shelljs";
 
 const start = () => {
     let path = os.homedir() + "/mua/reddit-wallpaper";
     let wallpaperPath = path+"/reddit_wallpaper.png";
     createDir(path)
 
-    FetchWallpaper
-        .fetchWallpaper()
-        .then(res => {
-            DownloadWallpaper.downloadWallpaper(res,wallpaperPath)
-        })
-
     let currentOs = CurrentOs;
     if (currentOs === "linux") {
-
+        let shellCommand = "gsettings set org.gnome.desktop.background picture-uri " + wallpaperPath
+        shelljs.exec(shellCommand);
     }
+
+    FetchWallpaper.fetchWallpaperPeriodic(wallpaperPath)
 }
 
 function createDir(path, recursive = true) {
